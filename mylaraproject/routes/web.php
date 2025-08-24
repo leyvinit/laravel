@@ -9,6 +9,7 @@ Route::get('/', function () {
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CarController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\ProductController;
 
 
 
@@ -17,6 +18,8 @@ Route::get('/users', [UserController::class, 'index']);
 Route::get('/users', [UserController::class, 'index'])->name('users.index');
 Route::get('/cars', [CarController::class, 'index']);
 Route::resource('tasks', TaskController::class);
+Route::resource('products', ProductController::class);
+
 
 
 
