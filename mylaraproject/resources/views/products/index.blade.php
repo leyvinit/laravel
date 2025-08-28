@@ -1,3 +1,10 @@
+@if (session('success'))
+  <div class="alert alert-success">{{ session('success') }}</div>
+@endif
+@if (session('error'))
+  <div class="alert alert-danger">{{ session('error') }}</div>
+@endif
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,10 +16,8 @@
 <body class="bg-light">
 <div class="container py-5">
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <a href="{{ route('products.index') }}" class="btn btn-outline-secondary">See All Products</a>
-        <h2 class="mb-0">Mini Market</h2>
-        <a href="{{ route('products.create') }}" class="btn btn-success">+ Add Product</a>
+    <div class="d-flex justify-content-end mb-4">
+        <a href="{{ route('cart.index') }}" class="btn btn-outline-primary">🛒 View Cart</a>
     </div>
 
     <!-- Filters -->
@@ -62,9 +67,10 @@
         </div>
     </form>
 
-    @if (session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
+    <!-- See All Products Button -->
+    <div class="mb-4 text-end">
+        <a href="{{ route('products.index') }}" class="btn btn-outline-secondary">See All Products</a>
+    </div>
 
     @if ($products->isEmpty())
         <div class="alert alert-warning">No products found.</div>
@@ -91,7 +97,15 @@
 
                             <div class="d-flex justify-content-between">
                                 <a href="{{ route('products.show', $product) }}" class="btn btn-sm btn-outline-primary">Details</a>
-                                <a href="{{ route('products.edit', $product) }}" class="btn btn-sm btn-warning">Edit</a>
+                                <a href="{{ route('products.edit', $product) }}" class="btn btn-sm btn-warning" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;">Edit</a>
+
+                                {{-- Add to Cart Button --}}
+                                <form action="{{ route('cart.add', $product->id) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    <button type="submit" class="btn btn-sm btn-success">Add to Cart</button>
+                                </form>
+
+                                {{-- Delete Button --}}
                                 <button type="button" class="btn btn-sm btn-danger"
                                         data-bs-toggle="modal" data-bs-target="#deleteModal{{ $product->id }}">
                                     Delete
